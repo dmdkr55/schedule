@@ -1,0 +1,59 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# ===== JDBC 프로젝트 추가 항목 =====
+
+# 민감 정보
+.env
+*.properties
+application.properties
+application.yml
+application.yaml
+
+# 로그 및 배포 파일
+*.log
+logs/
+*.jar
+*.war
+*.ear
+
+# 테스트 결과
+/test-output/
+
+# Maven (사용 시)
+target/
