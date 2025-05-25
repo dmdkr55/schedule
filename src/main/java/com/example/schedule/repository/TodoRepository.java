@@ -81,7 +81,7 @@ public class TodoRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Todo.class), id);
         } catch (EmptyResultDataAccessException e) {
-            return null; // 조회된 결과가 없으면 null 반환
+            return null;
         }
     }
 
