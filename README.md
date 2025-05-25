@@ -1,5 +1,5 @@
 일정 관리 API 명세서
-
+https://github.com/dmdkr55/schedule/blob/master/README.md
 Spring Boot 기반 일정 관리 API입니다.
 일정 등록, 조회, 수정, 삭제 기능을 제공합니다.
 
