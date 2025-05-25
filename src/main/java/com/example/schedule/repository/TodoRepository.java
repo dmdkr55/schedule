@@ -2,6 +2,8 @@ package com.example.schedule.repository;
 
 import com.example.schedule.dto.TodoResponseDto;
 import com.example.schedule.entity.Todo;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -54,6 +56,12 @@ public class TodoRepository {
         return jdbcTemplate.query(sql.toString(), todoRowMapper(), params.toArray());
     }
 
+    public Optional<TodoResponseDto> findResponseDtoById(Long id) {
+        String sql = "SELECT t.*, u.name FROM todo t JOIN user u ON t.user_id = u.id WHERE t.id = ?";
+        List<TodoResponseDto> todoResponseDtos = jdbcTemplate.query(sql, todoRowMapper(), id);
+        return todoResponseDtos.isEmpty() ? Optional.empty() : Optional.of(todoResponseDtos.get(0));
+    }
+
     private RowMapper<TodoResponseDto> todoRowMapper() {
         return (rs, rowNum) -> {
             TodoResponseDto todoResponseDto = new TodoResponseDto();
@@ -68,11 +76,28 @@ public class TodoRepository {
         };
     }
 
-    public Optional<TodoResponseDto> findById(Long id) {
-        String sql = "SELECT t.*, u.name FROM todo t JOIN user u ON t.user_id = u.id WHERE t.id = ?";
-        List<TodoResponseDto> todos = jdbcTemplate.query(sql, todoRowMapper(), id);
-        return todos.isEmpty() ? Optional.empty() : Optional.of(todos.get(0));
+    public Todo findById(Long id) {
+        String sql = "SELECT * FROM todo WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Todo.class), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null; // 조회된 결과가 없으면 null 반환
+        }
     }
 
+    public void update(Todo todo) {
+        String sql = "UPDATE todo SET title = ?, content = ?, modified_at = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                todo.getTitle(),
+                todo.getContent(),
+                todo.getModifiedAt(),
+                todo.getId()
+        );
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM todo WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 
 }

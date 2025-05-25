@@ -1,5 +1,6 @@
 package com.example.schedule.repository;
 
+import com.example.schedule.entity.Todo;
 import com.example.schedule.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,6 +50,14 @@ public class UserRepository {
                 );
             }
         };
+    }
+
+    public void update(User user) {
+        String sql = "UPDATE user SET name = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                user.getName(),
+                user.getId()
+        );
     }
 
 }
